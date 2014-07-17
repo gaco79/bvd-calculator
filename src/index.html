@@ -44,9 +44,9 @@
 				<h2>L:</h2>
 			</div>
 			<div class="small-3 columns">
-				<label class="error">Sphere <input type="text" name="sph" id="sph"
-					value="PLANO" />
-					<small class="error">Invalid entry</small>
+				<label class="error">Sphere <input type="text" name="sph"
+					id="sph" value="PLANO" /> <small class="error">Invalid
+						entry</small>
 				</label>
 			</div>
 			<div class="small-3 columns">
@@ -63,13 +63,30 @@
 	<form id="bvd">
 		<div class="row">
 			<div class="medium-6 columns">
-				<label>Original BVD <input type="text" name="originalBvd"
-					id="originalBvd" />
-				</label>
+				<div class="row collapse">
+					<div class="small-12 medium-4 columns">
+						<span class="prefix">Original BVD: </span>
+					</div>
+					<div class="small-9 medium-7 columns">
+						<input type="number" min="0" max="30" name="originalBvd" id="originalBvd" value="13" class="text-right">
+					</div>
+					<div class="small-3 medium-1 columns">
+						<span class="postfix">mm</span>
+					</div>
+				</div>
 			</div>
 			<div class="medium-6 columns">
-				<label>New BVD <input type="text" name="newBvd" id="newBvd" />
-				</label>
+				<div class="row collapse">
+					<div class="small-12 medium-4 columns">
+						<span class="prefix">New BVD: </span>
+					</div>
+					<div class="small-9 medium-7 columns">
+						<input type="number" min="0" max="30" name="newBvd" id="newBvd" value="0" class="text-right">
+					</div>
+					<div class="small-3 medium-1 columns">
+						<span class="postfix">mm</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</form>

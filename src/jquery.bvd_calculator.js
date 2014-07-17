@@ -9,24 +9,15 @@
 window.console.log('Start BVD Calculator');
 
 (function($) {
-	var sph = 0;
-	var cyl = 0;
-	var axis = 0;
-
 	// Collection method.
 	$.fn.bvd_calculator = function() {
 		return this.each(function(i) {
 			window.console.log('Start collection method');
 
-			// get current values
-			sphereInput = $('#sph', this);
-			sph = sphereInput.val();
-			
-			cylInput = $('#cyl', this);
-			cyl = cylInput.val();
-			
-			axisInput = $('#axis', this);
-			axis = axisInput.val();
+			// get inputs
+			sphereInput = $.fn.bvd_calculator.inputs.sphere = $('#sph', this);
+			cylInput = $.fn.bvd_calculator.inputs.cyl = $('#cyl', this);
+			axisInput = $.fn.bvd_calculator.inputs.axis = $('#axis', this);
 
 			//Bind sph and cyl to power number formatter
 			sphereInput.on("focusout", formatPower);
@@ -46,6 +37,26 @@ window.console.log('Start BVD Calculator');
 
 		});
 	};
+	
+	/**
+	 * HTML Input boxes for Rx values
+	 */
+	$.fn.bvd_calculator.inputs = {
+			sphere: null,
+			cyl: null,
+			axis: null
+	};
+	
+	/**
+	 * Defaults 
+	 */
+	$.fn.bvd_calculator.defaults = {
+			sphereSelector: '#sph',
+			cylSelector: '#cyl',
+			axisSelector: '#axis',
+			originalBvdSelector: '#originalBvd',
+			newBvdSelector: '#newBvd',
+	};
 
 	// Static method.
 	$.bvd_calculator = function(options) {
@@ -57,11 +68,9 @@ window.console.log('Start BVD Calculator');
 		return 'awesome' + options.punctuation;
 	};
 
-	// Static method default options.
-	$.bvd_calculator.options = {
-		punctuation : '.'
-	};
-
+	/**
+	 * Format an input as standard format lens power value
+	 */
 	function formatPower(powerContainer, roundValue) {
 		//default roundValue to false
 		roundValue = typeof roundValue !== 'undefined' ? roundValue : false;
@@ -96,15 +105,16 @@ window.console.log('Start BVD Calculator');
 		}
 		powerContainer.target.value = finalValue;
 		
-		// Update member variables
+		// Update jQuery objects
 		if (powerContainer.target.id == 'sph') {
-			sph = power;
+			$.fn.bvd_calculator.inputs.sphere = $(powerContainer.target);
 		} else if (powerContainer.target.id == 'cyl') {
-			cyl = power;
+			$.fn.bvd_calculator.inputs.cyl = $(powerContainer.target);
 		}
 		
-		console.log(toString());
-	}
+		//Validate our Rx
+		$.fn.bvd_calculator.validate();
+	};
 	
 	/**
 	 * Format a number as an axis
@@ -119,17 +129,30 @@ window.console.log('Start BVD Calculator');
 		}
 		
 		// Get axis as float type and round off decimals
-		var power = Math.floor(parseFloat(axisValue));
-		
-		// Update function axis value 
-		axis = power;
+		var axis = Math.floor(parseFloat(axisValue));
 		
 		// Set input container value
-		axisContainer.target.value = power;
-	}
+		axisContainer.target.value = axis;
+	};
 	
-	function toString() {
-		return sph + ' / ' + cyl + ' x ' + axis;
-	}
+	/**
+	 * Validate the Rx
+	 */
+	$.fn.bvd_calculator.validate = function() {
+		sphereValue = $.fn.bvd_calculator.inputs.sphere.val();
+		console.log(sphereValue);
+		//if (typeof sphereValue == 'undefined) {}
+		if (this.sphereValue > 40 || this.sphereValue < -40) {
+			sphereInput.addClass('error');
+		}
+	};
+	
+	/**
+	 * Return Rx as String
+	 */
+	$.fn.bvd_calculator.toString = function() {
+		return "To Do!";
+		//return sph + ' / ' + cyl + ' x ' + axis;
+	};
 
 }(jQuery));

@@ -88,6 +88,7 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
+      /*
       src: {
         files: '<%= jshint.src.src %>',
         tasks: ['jshint:src', 'qunit']
@@ -96,6 +97,11 @@ module.exports = function(grunt) {
         files: '<%= jshint.test.src %>',
         tasks: ['jshint:test', 'qunit']
       },
+      */
+      scss: {
+    	  files: 'src/scss/*.scss',
+          tasks: ['sass']  
+      }
     },
   });
 

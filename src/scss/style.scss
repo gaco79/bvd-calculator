@@ -3,7 +3,7 @@
 @import 'foundation';
 
 header {
-	background-color:$primary-color;
+	background-color: scale-color($primary-color, $lightness: 0%);
 	padding: 1rem;
-	margin-bottom:1rem;
+	margin-bottom: 2rem;
 }

@@ -5203,5 +5203,9 @@ header {
   margin-bottom: 2rem; }
 
 #bvd {
-  background-color: red;
-  padding-top: 1rem; }
+  background-color: #f9f9f9;
+  padding-top: 1rem;
+  margin-bottom: 1rem; }
+
+.rx h2, .newRx h2 {
+  margin-top: 0.75rem; }

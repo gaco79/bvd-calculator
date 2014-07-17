@@ -9,33 +9,43 @@
 window.console.log('Start BVD Calculator');
 
 (function($) {
+	
 	// Collection method.
-	$.fn.bvd_calculator = function() {
-		return this.each(function(i) {
-			window.console.log('Start collection method');
+	$.fn.bvd_calculator = function(options) {
+		var opts = $.extend({}, $.fn.bvd_calculator.defaults, options);
 
-			// get inputs
+		return this.each(function(i) {
+			console.log(this);
+			// Get inputs
 			sphereInput = $.fn.bvd_calculator.inputs.sphere = $('#sph', this);
 			cylInput = $.fn.bvd_calculator.inputs.cyl = $('#cyl', this);
 			axisInput = $.fn.bvd_calculator.inputs.axis = $('#axis', this);
 
-			// Bind sph and cyl to power number formatter
+			// Get outputs
+			var outputId = $('#outputId', this).val();
+			$.fn.bvd_calculator.outputs.sphere = $(outputId + ' #sph');
+			//$.fn.bvd_calculator.outputs.cyl = $(outputId + ' #cyl');
+			//$.fn.bvd_calculator.outputs.axis = $(outputId + ' #axis');
+
+			// Bind inputs to number formatters
 			sphereInput.on("focusout", formatPower);
 			cylInput.on("focusout", formatPower);
-
-			// Bind axis input to formatter
 			axisInput.on("focusout", formatAxis);
 
-			// Select values in input boxes on focus
-			// more complicated than it looks:
-			// http://stackoverflow.com/questions/3380458/looking-for-a-better-workaround-to-chrome-select-on-focus-bug
-			/*
-			 * jQuery(sphereInput, cylInput, axisInput).on("click", function() {
-			 * $(this).select(); });
-			 */
+			// Bind inputs to output calculators
+			sphereInput.on("keyup", compensatePower);
 
 		});
+		
 	};
+	
+	function compensatePower(input) {
+		//console.log(input);
+		parentForm = $(input.target).parent('form');
+		outputId = parentForm.children('outputId').val();
+		console.log(outputId);
+		$(outputId + ' #sph').val(input.target.value);
+	}
 
 	/**
 	 * HTML Input boxes for Rx values
@@ -45,6 +55,11 @@ window.console.log('Start BVD Calculator');
 		cyl : null,
 		axis : null
 	};
+
+	/**
+	 * Store outputs here
+	 */
+	$.fn.bvd_calculator.outputs = {};
 
 	/**
 	 * Defaults
@@ -70,9 +85,9 @@ window.console.log('Start BVD Calculator');
 	/**
 	 * Format an input as standard format lens power value
 	 */
-	function formatPower(powerContainer, roundValue) {
+	function formatPower(powerContainer) {
 		// default roundValue to false
-		roundValue = typeof roundValue !== 'undefined' ? roundValue : false;
+		// roundValue = typeof roundValue !== 'undefined' ? roundValue : false;
 
 		// get Power value
 		var powerValue = powerContainer.target.value;
@@ -85,11 +100,8 @@ window.console.log('Start BVD Calculator');
 		// Get power as float type
 		var power = parseFloat(powerValue);
 
-		// round to 0.25??
-		if (roundValue) {
-			console.log('Rounding...');
-			power = Math.floor(power * 4) / 4;
-		}
+		// round to 0.25
+		power = Math.floor(power * 4) / 4;
 
 		// Round to 2dp
 		power = power.toFixed(2);
@@ -99,7 +111,7 @@ window.console.log('Start BVD Calculator');
 			finalValue = '+' + power;
 		} else if (power < 0) {
 			finalValue = power;
-		} else if (power == 0){
+		} else if (power == 0) {
 			finalValue = 'PLANO';
 		} else {
 			finalValue = '';
@@ -157,18 +169,18 @@ window.console.log('Start BVD Calculator');
 	function validatePower(input) {
 		var value = parseFloat(input.val());
 		var errorText = '';
-		
+
 		// PLANO or null value is fine, but all following assume numerical input
 		if (input.val() == 'PLANO' || input.val() === '') {
 			displayError(input, '');
 			return;
 		}
-		
+
 		// Not a number
 		if (typeof value == 'NaN') {
 			errorText = 'Not a number';
 		}
-		
+
 		// very large power error
 		if (value > 40 || value < -40) {
 			errorText = 'Power out of normal range';
@@ -178,29 +190,28 @@ window.console.log('Start BVD Calculator');
 		if (value * 4 != Math.floor(value * 4)) {
 			errorText = 'Power not multiple of 0.25';
 		}
-		
+
 		displayError(input, errorText);
 	}
-	
+
 	/**
 	 * Attach an error to an element
 	 */
 	function displayError(element, errorText) {
 		// remove old error messages
 		element.next('small.error').remove();
-		
+
 		// Add / remove error markers
 		if (errorText != '') {
 			element.parent('label').addClass('error');
 
-			element.after('<small class="error">' + errorText
-					+ '</small>');
+			element.after('<small class="error">' + errorText + '</small>');
 		} else {
 			// remove old errors
 			element.parent('label').removeClass('error');
 		}
 	}
-	
+
 	/**
 	 * Sphere specific input validation
 	 * 
@@ -211,25 +222,25 @@ window.console.log('Start BVD Calculator');
 		if (input.val() == '') {
 			input.val('PLANO');
 		}
-		
+
 		validatePower(input);
 	}
 
 	/**
 	 * Validate cyl power is correct
 	 * 
-	 * Only errors specific to cyls required here. Errors relating to 
-	 * incorrect power values will be dealt with be validatePower()
+	 * Only errors specific to cyls required here. Errors relating to incorrect
+	 * power values will be dealt with be validatePower()
 	 */
 	function validateCyl(input) {
 		// Can't have PLANO cyl
 		if (input.val() == 'PLANO') {
 			input.val('');
 		}
-		
+
 		// Cyl power but no axis
 		// tricky one this... leave it for now...
-		
+
 		validatePower(input);
 	}
 

@@ -417,7 +417,7 @@ select {
   margin-right: auto;
   margin-top: 0;
   margin-bottom: 0;
-  max-width: 62.5rem; }
+  max-width: 75rem; }
   .row:before, .row:after {
     content: " ";
     display: table; }
@@ -4548,7 +4548,7 @@ meta.foundation-mq-topbar {
     .top-bar.expanded {
       background: #333; }
   .contain-to-grid .top-bar {
-    max-width: 62.5rem;
+    max-width: 75rem;
     margin: 0 auto;
     margin-bottom: 0; }
   .top-bar-section {
@@ -5200,9 +5200,16 @@ th.hide-for-touch {
 header {
   background-color: #008fba;
   padding: 1rem;
-  margin-bottom: 2rem; }
+  margin-bottom: 1rem; }
 
 #bvd {
   background-color: #f9f9f9;
-  padding-top: 1rem;
+  padding: 1rem 1rem 0;
   margin-bottom: 1rem; }
+
+.rx h2, .newRx h2 {
+  margin-top: 0.75rem; }
+
+input[readonly] {
+  border: none;
+  box-shadow: none; }

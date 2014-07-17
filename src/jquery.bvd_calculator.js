@@ -77,8 +77,8 @@ window.console.log('Start BVD Calculator');
 		// get Power value
 		var powerValue = powerContainer.target.value;
 
-		// Value not set? or PLANO
-		if (powerValue == '' || powerValue == 'PLANO') {
+		// Value is PLANO?
+		if (powerValue == 'PLANO') {
 			powerValue = 0;
 		}
 
@@ -99,8 +99,10 @@ window.console.log('Start BVD Calculator');
 			finalValue = '+' + power;
 		} else if (power < 0) {
 			finalValue = power;
-		} else {
+		} else if (power == 0){
 			finalValue = 'PLANO';
+		} else {
+			finalValue = '';
 		}
 		powerContainer.target.value = finalValue;
 
@@ -142,53 +144,95 @@ window.console.log('Start BVD Calculator');
 	 * Validate the Rx
 	 */
 	$.fn.bvd_calculator.validate = function() {
-		validateSphere();
-		validateCyl();
+		validateSph($.fn.bvd_calculator.inputs.sphere);
+		validateCyl($.fn.bvd_calculator.inputs.cyl);
 		validateAxis();
 
 		console.log($.fn.bvd_calculator.toString());
 	};
 
 	/**
-	 * Validate sphere power is correct
+	 * Validate power value is correct
 	 */
-	function validateSphere() {
-		var sphereInput = $.fn.bvd_calculator.inputs.sphere;
-		var sphereValue = parseFloat(sphereInput.val());
-		var sphereParent = sphereInput.parent('label');
-		var sphereError = '';
-
-		// remove old error messages
-		sphereParent.children('small.error').remove();
-
+	function validatePower(input) {
+		var value = parseFloat(input.val());
+		var errorText = '';
+		
+		// PLANO or null value is fine, but all following assume numerical input
+		if (input.val() == 'PLANO' || input.val() === '') {
+			displayError(input, '');
+			return;
+		}
+		
+		// Not a number
+		if (typeof value == 'NaN') {
+			errorText = 'Not a number';
+		}
+		
 		// very large power error
-		if (sphereValue > 40 || sphereValue < -40) {
-			sphereError = 'Power out of normal range';
+		if (value > 40 || value < -40) {
+			errorText = 'Power out of normal range';
 		}
 
 		// Not multiple of 0.25 error
-		if (sphereValue * 4 != Math.floor(sphereValue * 4)) {
-			sphereError = 'Power not multiple of 0.25';
+		if (value * 4 != Math.floor(value * 4)) {
+			errorText = 'Power not multiple of 0.25';
 		}
-
+		
+		displayError(input, errorText);
+	}
+	
+	function displayError(element, errorText) {
+		// remove old error messages
+		element.next('small.error').remove();
+		
 		// Add / remove error markers
-		if (sphereError != '') {
-			sphereParent.addClass('error');
+		if (errorText != '') {
+			element.parent('label').addClass('error');
 
-			sphereInput.after('<small class="error">' + sphereError
+			element.after('<small class="error">' + errorText
 					+ '</small>');
 		} else {
 			// remove old errors
-			sphereParent.removeClass('error');
+			element.parent('label').removeClass('error');
 		}
-
+	}
+	
+	/**
+	 * Sphere specific input validation
+	 * 
+	 * Problems with power values handled by validatePower()
+	 */
+	function validateSph(input) {
+		// Must contain at least 'PLANO'
+		if (input.val() == '') {
+			input.val('PLANO');
+		}
+		
+		validatePower(input);
 	}
 
 	/**
 	 * Validate cyl power is correct
+	 * 
+	 * Only errors specific to cyls required here. Errors relating to 
+	 * incorrect power values will be dealt with be validatePower()
 	 */
-	function validateCyl() {
-
+	function validateCyl(input) {
+		// Can't have PLANO cyl
+		if (input.val() == 'PLANO') {
+			input.val('');
+		}
+		
+		// Cyl power but no axis
+		if (input.val() != '' && $.fn.bvd_calculator.inputs.axis.val() == "") {
+			console.log('cyl val', input.val());
+			console.log('axis val', $.fn.bvd_calculator.inputs.axis.val());
+			
+			displayError($.fn.bvd_calculator.inputs.axis, 'Cyl power but no axis');
+		}
+		
+		validatePower(input);
 	}
 
 	/**

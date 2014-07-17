@@ -15,8 +15,8 @@ window.console.log('Start BVD Calculator');
 		return this.each(function(i) {
 			window.console.log('Start collection method');
 			
-			window.console.log($(this));
-			$(this).html('awesome' + i);
+			var sph = $('#sph', this).val();
+			window.console.log(sph);
 		});
 	};
 

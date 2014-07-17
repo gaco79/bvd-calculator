@@ -54,6 +54,7 @@ module.exports = function(grunt) {
           files: {
                   'dist/foundation.min.js': 'bower_components/foundation/js/foundation.min.js',
                   'src/foundation.min.js': 'bower_components/foundation/js/foundation.min.js',
+                  'src/foundation.js': 'bower_components/foundation/js/foundation.js',
                   'dist/modernizr.js': 'bower_components/modernizr/modernizr.js',
                   'dist/style.css': 'src/style.css',
                   'src/jquery.min.js': 'bower_components/jquery/dist/jquery.min.js',

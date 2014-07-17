@@ -8,21 +8,31 @@
 </head>
 <body>
 
+	<div class="row">
+		<div class="small-12 columns text-center">
+			<h1>
+				Back Vertex Distance Compensator<br /> <small>by Gareth
+					Cooper</small>
+			</h1>
+		</div>
+	</div>
+
 	<form id="R" class="rx">
 		<div class="row">
-			<div class="small-3 columns text-right">
+			<div class="small-2 columns text-right">
 				<h2>R:</h2>
 			</div>
 			<div class="small-3 columns">
-				<label>Sphere <input type="text" name="sph" id="sph" value="3" />
+				<label>Sphere <input type="text" name="sph" id="sph"
+					value="PLANO" />
 				</label>
 			</div>
 			<div class="small-3 columns">
-				<label>Cyl <input type="text" name="Cyl" />
+				<label>Cyl <input type="text" name="Cyl" id="cyl" />
 				</label>
 			</div>
-			<div class="small-3 columns">
-				<label>Axis <input type="text" name="Axis" />
+			<div class="small-3 columns end">
+				<label>Axis <input type="text" name="Axis" id="axis" />
 				</label>
 			</div>
 		</div>
@@ -30,19 +40,35 @@
 
 	<form id="L" class="rx">
 		<div class="row">
-			<div class="small-3 columns text-right">
+			<div class="small-2 columns text-right">
 				<h2>L:</h2>
 			</div>
 			<div class="small-3 columns">
-				<label>Sphere <input type="text" name="sph" id="sph" />
+				<label class="error">Sphere <input type="text" name="sph" id="sph"
+					value="PLANO" />
+					<small class="error">Invalid entry</small>
 				</label>
 			</div>
 			<div class="small-3 columns">
-				<label>Cyl <input type="text" name="Cyl" />
+				<label>Cyl <input type="text" name="Cyl" id="cyl" />
 				</label>
 			</div>
-			<div class="small-3 columns">
-				<label>Axis <input type="text" name="Axis" />
+			<div class="small-3 columns end">
+				<label>Axis <input type="text" name="Axis" id="axis" />
+				</label>
+			</div>
+		</div>
+	</form>
+
+	<form id="bvd">
+		<div class="row">
+			<div class="medium-6 columns">
+				<label>Original BVD <input type="text" name="originalBvd"
+					id="originalBvd" />
+				</label>
+			</div>
+			<div class="medium-6 columns">
+				<label>New BVD <input type="text" name="newBvd" id="newBvd" />
 				</label>
 			</div>
 		</div>

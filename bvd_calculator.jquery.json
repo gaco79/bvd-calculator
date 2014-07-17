@@ -1,0 +1,27 @@
+{
+  "name": "bvd-calculator",
+  "title": "BVD Calculator",
+  "description": "Online converter for back vertex distance of optical lenses",
+  "version": "0.0.1",
+  "homepage": "http://bvdcalculator.garethcooper.com",
+  "author": {
+    "name": "Gareth Cooper",
+    "email": "gareth@garethcooper.com",
+    "url": "http://garethcooper.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gaco79/bvd-calculator"
+  },
+  "bugs": "https://github.com/gaco79/bvd-calculator/issues",
+  "licenses": [
+    {
+      "type": "GPLv2",
+      "url": "https://github.com/gaco79/bvd-calculator/blob/master/LICENSE"
+    }
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "keywords": []
+}

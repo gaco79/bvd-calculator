@@ -63,7 +63,6 @@ module.exports = function(grunt) {
                   'dist/jquery.min.map': 'src/jquery.min.map',
                   'dist/index.html': 'src/index.html',
           }
-      
         }
       },
     qunit: {

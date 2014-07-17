@@ -182,6 +182,9 @@ window.console.log('Start BVD Calculator');
 		displayError(input, errorText);
 	}
 	
+	/**
+	 * Attach an error to an element
+	 */
 	function displayError(element, errorText) {
 		// remove old error messages
 		element.next('small.error').remove();
@@ -225,12 +228,7 @@ window.console.log('Start BVD Calculator');
 		}
 		
 		// Cyl power but no axis
-		if (input.val() != '' && $.fn.bvd_calculator.inputs.axis.val() == "") {
-			console.log('cyl val', input.val());
-			console.log('axis val', $.fn.bvd_calculator.inputs.axis.val());
-			
-			displayError($.fn.bvd_calculator.inputs.axis, 'Cyl power but no axis');
-		}
+		// tricky one this... leave it for now...
 		
 		validatePower(input);
 	}

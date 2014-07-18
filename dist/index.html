@@ -18,118 +18,117 @@
 		</div>
 	</header>
 
-	<form id="R" class="rx">
-		<div class="row">
-			<div class="small-2 columns text-right">
-				<h2>R:</h2>
-			</div>
-			<div class="small-3 columns">
-				<label>Sphere <input type="text" name="sph" id="sph"
-					value="PLANO" autofocus />
-				</label>
-			</div>
-			<div class="small-3 columns">
-				<label>Cyl <input type="text" name="Cyl" id="cyl" />
-				</label>
-			</div>
-			<div class="small-3 columns end">
-				<label>Axis <input type="text" name="Axis" id="axis" />
-				</label>
-			</div>
-		</div>
-		<input type="hidden" id="outputId" value="#newR" />
-	</form>
-
-	<form id="L" class="rx">
-		<div class="row">
-			<div class="small-2 columns text-right">
-				<h2>L:</h2>
-			</div>
-			<div class="small-3 columns">
-				<label>Sphere <input type="text" name="sph" id="sph"
-					value="PLANO" />
-				</label>
-			</div>
-			<div class="small-3 columns">
-				<label>Cyl <input type="text" name="Cyl" id="cyl" />
-				</label>
-			</div>
-			<div class="small-3 columns end">
-				<label>Axis <input type="text" name="Axis" id="axis" />
-				</label>
-			</div>
-		</div>
-		<input type="hidden" id="outputId" value="#newL" />
-	</form>
-
-	<form id="bvd">
-		<div class="row">
-			<div class="medium-6 columns">
-				<div class="row collapse">
-					<div class="small-12 medium-4 columns">
-						<span class="prefix">Original BVD: </span>
-					</div>
-					<div class="small-9 medium-7 columns">
-						<input type="number" min="0" max="30" name="originalBvd"
-							id="originalBvd" value="13" class="text-right">
-					</div>
-					<div class="small-3 medium-1 columns">
-						<span class="postfix">mm</span>
-					</div>
+	<div class="row">
+		<div class="medium-8 medium-push-4 columns">
+			<div class="row">
+				<div class="small-12 columns">
+					<h6>ORIGINAL Rx</h6>
 				</div>
 			</div>
-			<div class="medium-6 columns">
-				<div class="row collapse">
-					<div class="small-12 medium-4 columns">
-						<span class="prefix">New BVD: </span>
+			<form id="R" class="rx">
+				<div class="row">
+					<div class="small-2 columns text-right">
+						<h2>R:</h2>
 					</div>
-					<div class="small-9 medium-7 columns">
-						<input type="number" min="0" max="30" name="newBvd" id="newBvd"
-							value="0" class="text-right">
+					<div class="small-3 columns">
+						<label>Sphere <input type="text" name="sph" id="sph"
+							value="PLANO" autofocus />
+						</label>
 					</div>
-					<div class="small-3 medium-1 columns">
-						<span class="postfix">mm</span>
+					<div class="small-3 columns">
+						<label>Cyl <input type="text" name="Cyl" id="cyl" />
+						</label>
 					</div>
+					<div class="small-3 columns end">
+						<label>Axis <input type="text" name="Axis" id="axis" />
+						</label>
+					</div>
+				</div>
+				<input type="hidden" id="outputId" value="#newR" />
+			</form>
+
+			<form id="L" class="rx">
+				<div class="row">
+					<div class="small-2 columns text-right">
+						<h2>L:</h2>
+					</div>
+					<div class="small-3 columns">
+						<label>Sphere <input type="text" name="sph" id="sph"
+							value="PLANO" />
+						</label>
+					</div>
+					<div class="small-3 columns">
+						<label>Cyl <input type="text" name="Cyl" id="cyl" />
+						</label>
+					</div>
+					<div class="small-3 columns end">
+						<label>Axis <input type="text" name="Axis" id="axis" />
+						</label>
+					</div>
+				</div>
+				<input type="hidden" id="outputId" value="#newL" />
+			</form>
+
+			<form id="bvd">
+				<div class="row">
+					<div class="medium-6 columns">
+						<div class="row collapse">
+							<div class="small-12 medium-4 columns">
+								<span class="prefix">Original BVD: </span>
+							</div>
+							<div class="small-9 medium-7 columns">
+								<input type="number" min="0" max="30" name="originalBvd"
+									id="originalBvd" value="13" class="text-right">
+							</div>
+							<div class="small-3 medium-1 columns">
+								<span class="postfix">mm</span>
+							</div>
+						</div>
+					</div>
+					<div class="medium-6 columns">
+						<div class="row collapse">
+							<div class="small-12 medium-4 columns">
+								<span class="prefix">New BVD: </span>
+							</div>
+							<div class="small-9 medium-7 columns">
+								<input type="number" min="0" max="30" name="newBvd" id="newBvd"
+									value="0" class="text-right">
+							</div>
+							<div class="small-3 medium-1 columns">
+								<span class="postfix">mm</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="row">
+				<div class="small-12 columns">
+					<h6>COMPENSATED Rx</h6>
+				</div>
+			</div>
+			<div class="row" id="newR" class="newRx">
+				<div class="small-2 columns text-right">
+					<h2>R:</h2>
+				</div>
+				<div class="small-3 columns">
+					<span id="outputR"></span>
+				</div>
+			</div>
+
+			<div class="row" id="newL" class="newRx">
+				<div class="small-2 columns text-right">
+					<h2>L:</h2>
+				</div>
+				<div class="small-9 columns">
+					<span id="outputL"></span>
 				</div>
 			</div>
 		</div>
-	</form>
 
-	<div class="row" id="newR" class="newRx">
-		<div class="small-2 columns text-right">
-			<h2>R:</h2>
-		</div>
-		<div class="small-3 columns">
-			<label>Sphere <input type="text" name="sph" id="sph" class="sph"
-				value="PLANO" readonly />
-			</label>
-		</div>
-		<div class="small-3 columns">
-			<label>Cyl <input type="text" name="Cyl" id="cyl" readonly />
-			</label>
-		</div>
-		<div class="small-3 columns end">
-			<label>Axis <input type="text" name="Axis" id="axis" readonly />
-			</label>
-		</div>
-	</div>
-
-	<div class="row" id="newL" class="newRx">
-		<div class="small-2 columns text-right">
-			<h2>L:</h2>
-		</div>
-		<div class="small-3 columns">
-			<label>Sphere <input type="text" name="sph" id="sph"
-				value="PLANO" readonly />
-			</label>
-		</div>
-		<div class="small-3 columns">
-			<label>Cyl <input type="text" name="Cyl" id="cyl" readonly />
-			</label>
-		</div>
-		<div class="small-3 columns end">
-			<label>Axis <input type="text" name="Axis" id="axis" readonly />
-			</label>
+		<div class="medium-4 medium-pull-8 columns">
+				<img
+					src="https://storage.googleapis.com/support-kms-prod/SNP_934A860F32EE7BFE464ECB05F45B35727A54_2922295_en_v1" />
 		</div>
 	</div>
 

@@ -5197,15 +5197,21 @@ th.hide-for-touch {
   th.show-for-print {
     display: table-cell !important; } }
 
-header {
-  background-color: #008fba;
-  padding: 1rem;
-  margin-bottom: 1rem; }
+body > header {
+  background-color: #169cc5;
+  padding: 1rem; }
+  body > header h1 {
+    color: #fcfcfc; }
+    body > header h1 small {
+      color: #d9d9d9; }
 
-#bvd {
+#bvd, .ad {
   background-color: #f9f9f9;
   padding: 1rem 1rem 0;
   margin-bottom: 1rem; }
+
+.ad {
+  padding-bottom: 1rem; }
 
 .rx h2, .newRx h2 {
   margin-top: 0.75rem; }

@@ -5202,8 +5202,11 @@ body > header {
   padding: 1rem; }
   body > header h1 {
     color: #fcfcfc; }
-    body > header h1 small {
+    body > header h1 small a {
       color: #d9d9d9; }
+      body > header h1 small a:hover {
+        color: #f2f2f2;
+        text-decoration: underline; }
 
 #bvd, .ad {
   background-color: #f9f9f9;

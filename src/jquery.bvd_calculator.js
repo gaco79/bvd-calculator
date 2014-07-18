@@ -15,18 +15,15 @@ window.console.log('Start BVD Calculator');
 		var opts = $.extend({}, $.fn.bvd_calculator.defaults, options);
 
 		return this.each(function(i) {
-			console.log(this);
+			
 			// Get inputs
-			sphereInput = $.fn.bvd_calculator.inputs.sphere = $('#sph', this);
-			cylInput = $.fn.bvd_calculator.inputs.cyl = $('#cyl', this);
-			axisInput = $.fn.bvd_calculator.inputs.axis = $('#axis', this);
+			sphereInput = $('#sph', this);
+			cylInput = $('#cyl', this);
+			axisInput = $('#axis', this);
 
-			// Get outputs
-			var outputId = $('#outputId', this).val();
-			$.fn.bvd_calculator.outputs.sphere = $(outputId + ' #sph');
-			//$.fn.bvd_calculator.outputs.cyl = $(outputId + ' #cyl');
-			//$.fn.bvd_calculator.outputs.axis = $(outputId + ' #axis');
-
+			// Generate and store output element
+			$(this).data('outputElement', 'output' + $(this).attr('id'));
+			
 			// Bind inputs to number formatters
 			sphereInput.on("focusout", formatPower);
 			cylInput.on("focusout", formatPower);
@@ -40,26 +37,11 @@ window.console.log('Start BVD Calculator');
 	};
 	
 	function compensatePower(input) {
-		//console.log(input);
 		parentForm = $(input.target).parent('form');
 		outputId = parentForm.children('outputId').val();
 		console.log(outputId);
 		$(outputId + ' #sph').val(input.target.value);
 	}
-
-	/**
-	 * HTML Input boxes for Rx values
-	 */
-	$.fn.bvd_calculator.inputs = {
-		sphere : null,
-		cyl : null,
-		axis : null
-	};
-
-	/**
-	 * Store outputs here
-	 */
-	$.fn.bvd_calculator.outputs = {};
 
 	/**
 	 * Defaults
@@ -85,12 +67,11 @@ window.console.log('Start BVD Calculator');
 	/**
 	 * Format an input as standard format lens power value
 	 */
-	function formatPower(powerContainer) {
-		// default roundValue to false
-		// roundValue = typeof roundValue !== 'undefined' ? roundValue : false;
-
+	function formatPower(event) {
+		powerContainer = $(event.target);
+		
 		// get Power value
-		var powerValue = powerContainer.target.value;
+		var powerValue = powerContainer.val();
 
 		// Value is PLANO?
 		if (powerValue == 'PLANO') {
@@ -116,17 +97,10 @@ window.console.log('Start BVD Calculator');
 		} else {
 			finalValue = '';
 		}
-		powerContainer.target.value = finalValue;
-
-		// Update jQuery objects
-		if (powerContainer.target.id == 'sph') {
-			$.fn.bvd_calculator.inputs.sphere = $(powerContainer.target);
-		} else if (powerContainer.target.id == 'cyl') {
-			$.fn.bvd_calculator.inputs.cyl = $(powerContainer.target);
-		}
+		powerContainer.val( finalValue );
 
 		// Validate our Rx
-		$.fn.bvd_calculator.validate();
+		$.fn.bvd_calculator.validate(powerContainer);
 	}
 	;
 
@@ -155,12 +129,13 @@ window.console.log('Start BVD Calculator');
 	/**
 	 * Validate the Rx
 	 */
-	$.fn.bvd_calculator.validate = function() {
-		validateSph($.fn.bvd_calculator.inputs.sphere);
-		validateCyl($.fn.bvd_calculator.inputs.cyl);
-		validateAxis();
-
-		console.log($.fn.bvd_calculator.toString());
+	$.fn.bvd_calculator.validate = function(inputElement) {
+		inputContainer = inputElement.parents('form.rx');
+		console.log();
+		
+		validateSph(inputContainer.find('#sph'));
+		validateCyl(inputContainer.find('#cyl'));
+		//validateAxis(inputContainer.find('#axis'));
 	};
 
 	/**
@@ -217,13 +192,13 @@ window.console.log('Start BVD Calculator');
 	 * 
 	 * Problems with power values handled by validatePower()
 	 */
-	function validateSph(input) {
+	function validateSph(inputElement) {
 		// Must contain at least 'PLANO'
-		if (input.val() == '') {
-			input.val('PLANO');
+		if (inputElement.val() == '') {
+			inputElement.val('PLANO');
 		}
 
-		validatePower(input);
+		validatePower(inputElement);
 	}
 
 	/**
@@ -232,16 +207,16 @@ window.console.log('Start BVD Calculator');
 	 * Only errors specific to cyls required here. Errors relating to incorrect
 	 * power values will be dealt with be validatePower()
 	 */
-	function validateCyl(input) {
+	function validateCyl(inputElement) {
 		// Can't have PLANO cyl
-		if (input.val() == 'PLANO') {
-			input.val('');
+		if (inputElement.val() == 'PLANO') {
+			inputElement.val('');
 		}
 
 		// Cyl power but no axis
 		// tricky one this... leave it for now...
 
-		validatePower(input);
+		validatePower(inputElement);
 	}
 
 	/**

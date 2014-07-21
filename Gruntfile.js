@@ -87,6 +87,10 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
+      src: {
+          files: '<%= jshint.src.src %>',
+          tasks: ['uglify']
+        },
       /*
       src: {
         files: '<%= jshint.src.src %>',

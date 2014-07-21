@@ -9,13 +9,13 @@
 window.console.log('Start BVD Calculator');
 
 (function($) {
-	
+
 	// Collection method.
 	$.fn.bvd_calculator = function(options) {
 		var opts = $.extend({}, $.fn.bvd_calculator.defaults, options);
 
 		return this.each(function(i) {
-			
+
 			// Get inputs
 			sphereInput = $('#sph', this);
 			cylInput = $('#cyl', this);
@@ -23,7 +23,7 @@ window.console.log('Start BVD Calculator');
 
 			// Generate and store output element
 			$(this).data('outputElement', 'output' + $(this).attr('id'));
-			
+
 			// Bind inputs to number formatters
 			sphereInput.on("focusout", formatPower);
 			cylInput.on("focusout", formatPower);
@@ -33,14 +33,23 @@ window.console.log('Start BVD Calculator');
 			sphereInput.on("keyup", compensatePower);
 
 		});
-		
+
 	};
-	
-	function compensatePower(input) {
-		parentForm = $(input.target).parent('form');
-		outputId = parentForm.children('outputId').val();
-		console.log(outputId);
-		$(outputId + ' #sph').val(input.target.value);
+
+	function compensatePower(inputForm) {
+		outputId = '#' + inputForm.data('outputElement');
+		console.log ('output ID', outputId);
+		
+		var sph = parseFloat(inputForm.find('#sph').val());
+		var cyl = parseFloat(inputForm.find('#cyl').val());
+		var axis = parseFloat(inputForm.find('#axis').val());
+		
+		var bvdChange = ($('#newBvd').val() - $('#originalBvd').val())/1000;
+		
+		var newSph = sph/(1+sph*bvdChange);
+		var newCyl = (sph+cyl)/(1+(sph+cyl)*bvdChange) - newSph;
+		
+		$(outputId).html('test');
 	}
 
 	/**
@@ -69,7 +78,7 @@ window.console.log('Start BVD Calculator');
 	 */
 	function formatPower(event) {
 		powerContainer = $(event.target);
-		
+
 		// get Power value
 		var powerValue = powerContainer.val();
 
@@ -97,7 +106,7 @@ window.console.log('Start BVD Calculator');
 		} else {
 			finalValue = '';
 		}
-		powerContainer.val( finalValue );
+		powerContainer.val(finalValue);
 
 		// Validate our Rx
 		$.fn.bvd_calculator.validate(powerContainer);
@@ -110,9 +119,10 @@ window.console.log('Start BVD Calculator');
 	 * Current British Standard specifies no decimal points
 	 */
 	function formatAxis(event) {
+		// Axis <input> HTML element
 		axisInput = $(event.target);
-		
-		// get Axis container
+
+		// get Axis value
 		var axisValue = axisInput.val();
 
 		// No value set, return no value
@@ -122,10 +132,13 @@ window.console.log('Start BVD Calculator');
 		}
 
 		// Get axis value as float type and round off decimals
-		var axis = Math.floor(parseFloat(axisValue));
+		if (typeof axisValue == 'number') {
+			// Set input container value
+			var axis = Math.floor(parseFloat(axisValue));
+			axisInput.val(axis);
+		}
 
-		// Set input container value
-		axisInput.val(axis);
+		// Validate
 		$.fn.bvd_calculator.validate(axisInput);
 	}
 	;
@@ -135,11 +148,12 @@ window.console.log('Start BVD Calculator');
 	 */
 	$.fn.bvd_calculator.validate = function(inputElement) {
 		inputContainer = inputElement.parents('form.rx');
-		console.log();
-		
+
 		validateSph(inputContainer.find('#sph'));
 		validateCyl(inputContainer.find('#cyl'));
 		validateAxis(inputContainer.find('#axis'));
+		
+		compensatePower(inputContainer);
 	};
 
 	/**
@@ -227,16 +241,22 @@ window.console.log('Start BVD Calculator');
 	 * Validate axis is correct
 	 */
 	function validateAxis(inputElement) {
-		var val = inputElement.val();
+		var val = parseFloat(inputElement.val());
 		errorText = '';
 		
+		// PLANO or null value is fine, but all following assume numerical input
+		if (val === '') {
+			displayError(inputElement, '');
+			return;
+		}
+
 		if (val < 0 || val > 180) {
 			errorText = "Axis out of range";
 		}
-		
+
 		displayError(inputElement, errorText);
 	}
-	
+
 	/**
 	 * Return Rx as String
 	 */

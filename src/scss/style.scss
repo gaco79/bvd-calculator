@@ -31,10 +31,13 @@ body > header {
 	padding-bottom: 1rem;
 }
 
-.rx, .newRx {
-	h2 {
-		margin-top:0.75rem;
-	}
+.rx h2 {
+	margin-top:0.75rem;
+}
+
+.newRx span {
+	font-size: 2rem;
+	line-height: 1.7;
 }
 
 input[readonly] {

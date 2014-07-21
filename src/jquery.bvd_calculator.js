@@ -109,12 +109,15 @@ window.console.log('Start BVD Calculator');
 	 * 
 	 * Current British Standard specifies no decimal points
 	 */
-	function formatAxis(axisContainer) {
+	function formatAxis(event) {
+		axisInput = $(event.target);
+		
 		// get Axis container
-		var axisValue = axisContainer.target.value;
+		var axisValue = axisInput.val();
 
 		// No value set, return no value
 		if (axisValue == '') {
+			displayError(axisInput, '');
 			return;
 		}
 
@@ -122,7 +125,8 @@ window.console.log('Start BVD Calculator');
 		var axis = Math.floor(parseFloat(axisValue));
 
 		// Set input container value
-		axisContainer.target.value = axis;
+		axisInput.val(axis);
+		$.fn.bvd_calculator.validate(axisInput);
 	}
 	;
 
@@ -135,7 +139,7 @@ window.console.log('Start BVD Calculator');
 		
 		validateSph(inputContainer.find('#sph'));
 		validateCyl(inputContainer.find('#cyl'));
-		//validateAxis(inputContainer.find('#axis'));
+		validateAxis(inputContainer.find('#axis'));
 	};
 
 	/**
@@ -222,9 +226,17 @@ window.console.log('Start BVD Calculator');
 	/**
 	 * Validate axis is correct
 	 */
-	function validateAxis() {
-
+	function validateAxis(inputElement) {
+		var val = inputElement.val();
+		errorText = '';
+		
+		if (val < 0 || val > 180) {
+			errorText = "Axis out of range";
+		}
+		
+		displayError(inputElement, errorText);
 	}
+	
 	/**
 	 * Return Rx as String
 	 */

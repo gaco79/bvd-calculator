@@ -49,7 +49,7 @@ window.console.log('Start BVD Calculator');
 		var newSph = sph/(1+sph*bvdChange);
 		var newCyl = (sph+cyl)/(1+(sph+cyl)*bvdChange) - newSph;
 		
-		$(outputId).html('test');
+		$(outputId).html(newSph.toFixed(2) + ' / ' + newCyl.toFixed(2) + ' x ' + axis);
 	}
 
 	/**

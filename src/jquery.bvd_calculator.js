@@ -36,13 +36,20 @@ window.console.log('Start BVD Calculator');
 	};
 
 	/**
-	 * Update compensated power when BVD is changed
+	 * Defaults
 	 */
-	function bvdChanged(event) {
-		$('.rx').each(function() {
-			compensatePower($(this));
-		});
-	}
+	$.fn.bvd_calculator.defaults = {
+		sphereSelector : '#sph',
+		cylSelector : '#cyl',
+		axisSelector : '#axis',
+		originalBvdSelector : '#originalBvd',
+		newBvdSelector : '#newBvd',
+	};
+
+	// Static method.
+	$.bvd_calculator = function(options) {
+		window.console.log('Start static method');
+	};
 
 	/**
 	 * Calculate the Compensated Power at the new vertex distance
@@ -70,22 +77,6 @@ window.console.log('Start BVD Calculator');
 	}
 
 	/**
-	 * Defaults
-	 */
-	$.fn.bvd_calculator.defaults = {
-		sphereSelector : '#sph',
-		cylSelector : '#cyl',
-		axisSelector : '#axis',
-		originalBvdSelector : '#originalBvd',
-		newBvdSelector : '#newBvd',
-	};
-
-	// Static method.
-	$.bvd_calculator = function(options) {
-		window.console.log('Start static method');
-	};
-
-	/**
 	 * Format an input as standard format lens power value
 	 */
 	function formatPower(powerValue) {
@@ -98,7 +89,7 @@ window.console.log('Start BVD Calculator');
 		var power = parseFloat(powerValue);
 
 		// round to 0.25
-		//power = Math.floor(power * 4) / 4;
+		// power = Math.floor(power * 4) / 4;
 
 		// Round to 2dp
 		power = power.toFixed(2);
@@ -250,6 +241,15 @@ window.console.log('Start BVD Calculator');
 
 		displayError(inputElement, errorText);
 		compensatePower(inputElement);
+	}
+
+	/**
+	 * Update compensated power when BVD is changed
+	 */
+	function bvdChanged(event) {
+		$('.rx').each(function() {
+			compensatePower($(this));
+		});
 	}
 
 	/**

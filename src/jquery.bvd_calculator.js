@@ -20,36 +20,53 @@ window.console.log('Start BVD Calculator');
 			sphereInput = $('#sph', this);
 			cylInput = $('#cyl', this);
 			axisInput = $('#axis', this);
+			bvdInputs = $('.bvd');
 
 			// Generate and store output element
 			$(this).data('outputElement', 'output' + $(this).attr('id'));
 
 			// Bind inputs to number formatters
-			sphereInput.on("focusout", formatPower);
-			cylInput.on("focusout", formatPower);
-			axisInput.on("focusout", formatAxis);
-
-			// Bind inputs to output calculators
-			sphereInput.on("keyup", compensatePower);
+			sphereInput.on("focusout", validateSph);
+			cylInput.on("focusout", validateCyl);
+			axisInput.on("focusout", validateAxis);
+			bvdInputs.on("change", bvdChanged);
 
 		});
 
 	};
 
-	function compensatePower(inputForm) {
-		outputId = '#' + inputForm.data('outputElement');
-		console.log ('output ID', outputId);
-		
+	/**
+	 * Update compensated power when BVD is changed
+	 */
+	function bvdChanged(event) {
+		$('.rx').each(function() {
+			compensatePower($(this));
+		});
+	}
+
+	/**
+	 * Calculate the Compensated Power at the new vertex distance
+	 */
+	function compensatePower(inputElement) {
+		if (inputElement.is('form')) {
+			inputForm = inputElement;
+		} else {
+			inputForm = inputElement.parents('form.rx');
+		}
+
+		var outputId = '#' + inputForm.data('outputElement');
+
 		var sph = parseFloat(inputForm.find('#sph').val());
 		var cyl = parseFloat(inputForm.find('#cyl').val());
 		var axis = parseFloat(inputForm.find('#axis').val());
-		
-		var bvdChange = ($('#newBvd').val() - $('#originalBvd').val())/1000;
-		
-		var newSph = sph/(1+sph*bvdChange);
-		var newCyl = (sph+cyl)/(1+(sph+cyl)*bvdChange) - newSph;
-		
-		$(outputId).html(newSph.toFixed(2) + ' / ' + newCyl.toFixed(2) + ' x ' + axis);
+
+		var bvdChange = ($('#newBvd').val() - $('#originalBvd').val()) / 1000;
+
+		var newSph = sph / (1 + sph * bvdChange);
+		var newCyl = (sph + cyl) / (1 + (sph + cyl) * bvdChange) - newSph;
+
+		$(outputId).html(
+				formatPower(newSph) + ' / ' + newCyl.toFixed(2) + ' x ' + axis);
 	}
 
 	/**
@@ -66,22 +83,12 @@ window.console.log('Start BVD Calculator');
 	// Static method.
 	$.bvd_calculator = function(options) {
 		window.console.log('Start static method');
-
-		// Override default options with passed-in options.
-		options = $.extend({}, $.bvd_calculator.options, options);
-		// Return something awesome.
-		return 'awesome' + options.punctuation;
 	};
 
 	/**
 	 * Format an input as standard format lens power value
 	 */
-	function formatPower(event) {
-		powerContainer = $(event.target);
-
-		// get Power value
-		var powerValue = powerContainer.val();
-
+	function formatPower(powerValue) {
 		// Value is PLANO?
 		if (powerValue == 'PLANO') {
 			powerValue = 0;
@@ -91,12 +98,13 @@ window.console.log('Start BVD Calculator');
 		var power = parseFloat(powerValue);
 
 		// round to 0.25
-		power = Math.floor(power * 4) / 4;
+		//power = Math.floor(power * 4) / 4;
 
 		// Round to 2dp
 		power = power.toFixed(2);
 
 		// Format output
+		var finalValue;
 		if (power > 0) {
 			finalValue = '+' + power;
 		} else if (power < 0) {
@@ -106,10 +114,8 @@ window.console.log('Start BVD Calculator');
 		} else {
 			finalValue = '';
 		}
-		powerContainer.val(finalValue);
 
-		// Validate our Rx
-		$.fn.bvd_calculator.validate(powerContainer);
+		return finalValue;
 	}
 	;
 
@@ -118,74 +124,20 @@ window.console.log('Start BVD Calculator');
 	 * 
 	 * Current British Standard specifies no decimal points
 	 */
-	function formatAxis(event) {
-		// Axis <input> HTML element
-		axisInput = $(event.target);
-
-		// get Axis value
-		var axisValue = axisInput.val();
-
+	function formatAxis(axisValue) {
 		// No value set, return no value
 		if (axisValue == '') {
 			displayError(axisInput, '');
-			return;
+			return '';
 		}
 
 		// Get axis value as float type and round off decimals
-		if (typeof axisValue == 'number') {
-			// Set input container value
-			var axis = Math.floor(parseFloat(axisValue));
-			axisInput.val(axis);
-		}
+		var finalAxis = Math.floor(parseFloat(axisValue));
 
 		// Validate
-		$.fn.bvd_calculator.validate(axisInput);
+		return finalAxis;
 	}
 	;
-
-	/**
-	 * Validate the Rx
-	 */
-	$.fn.bvd_calculator.validate = function(inputElement) {
-		inputContainer = inputElement.parents('form.rx');
-
-		validateSph(inputContainer.find('#sph'));
-		validateCyl(inputContainer.find('#cyl'));
-		validateAxis(inputContainer.find('#axis'));
-		
-		compensatePower(inputContainer);
-	};
-
-	/**
-	 * Validate power value is correct
-	 */
-	function validatePower(input) {
-		var value = parseFloat(input.val());
-		var errorText = '';
-
-		// PLANO or null value is fine, but all following assume numerical input
-		if (input.val() == 'PLANO' || input.val() === '') {
-			displayError(input, '');
-			return;
-		}
-
-		// Not a number
-		if (typeof value == 'NaN') {
-			errorText = 'Not a number';
-		}
-
-		// very large power error
-		if (value > 40 || value < -40) {
-			errorText = 'Power out of normal range';
-		}
-
-		// Not multiple of 0.25 error
-		if (value * 4 != Math.floor(value * 4)) {
-			errorText = 'Power not multiple of 0.25';
-		}
-
-		displayError(input, errorText);
-	}
 
 	/**
 	 * Attach an error to an element
@@ -210,7 +162,9 @@ window.console.log('Start BVD Calculator');
 	 * 
 	 * Problems with power values handled by validatePower()
 	 */
-	function validateSph(inputElement) {
+	function validateSph(event) {
+		var inputElement = $(event.target);
+
 		// Must contain at least 'PLANO'
 		if (inputElement.val() == '') {
 			inputElement.val('PLANO');
@@ -225,7 +179,9 @@ window.console.log('Start BVD Calculator');
 	 * Only errors specific to cyls required here. Errors relating to incorrect
 	 * power values will be dealt with be validatePower()
 	 */
-	function validateCyl(inputElement) {
+	function validateCyl(event) {
+		var inputElement = $(event.target);
+
 		// Can't have PLANO cyl
 		if (inputElement.val() == 'PLANO') {
 			inputElement.val('');
@@ -238,12 +194,50 @@ window.console.log('Start BVD Calculator');
 	}
 
 	/**
+	 * Validate power value is correct
+	 */
+	function validatePower(inputElement) {
+		var value = parseFloat(inputElement.val());
+		inputElement.val(formatPower(inputElement.val()));
+		var errorText = '';
+
+		// PLANO or null value is fine, but all following assume numerical input
+		if (inputElement.val() == 'PLANO' || inputElement.val() === '') {
+			displayError(inputElement, '');
+			return;
+		}
+
+		// Not a number
+		if (typeof value == 'NaN') {
+			errorText = 'Not a number';
+		}
+
+		// very large power error
+		if (value > 40 || value < -40) {
+			errorText = 'Power out of normal range';
+		}
+
+		// Not multiple of 0.25 error
+		if (value * 4 != Math.floor(value * 4)) {
+			errorText = 'Power not multiple of 0.25';
+		}
+
+		displayError(inputElement, errorText);
+		compensatePower(inputElement);
+	}
+
+	/**
 	 * Validate axis is correct
 	 */
-	function validateAxis(inputElement) {
+	function validateAxis(event) {
+		var inputElement = $(event.target);
+
 		var val = parseFloat(inputElement.val());
-		errorText = '';
-		
+		var errorText = '';
+
+		// format
+		inputElement.val(formatAxis(inputElement.val()));
+
 		// PLANO or null value is fine, but all following assume numerical input
 		if (val === '') {
 			displayError(inputElement, '');
@@ -255,6 +249,7 @@ window.console.log('Start BVD Calculator');
 		}
 
 		displayError(inputElement, errorText);
+		compensatePower(inputElement);
 	}
 
 	/**

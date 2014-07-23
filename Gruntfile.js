@@ -45,24 +45,8 @@ module.exports = function(grunt) {
             outputStyle: 'compact'
           },
           files: {
-            'src/style.css': 'src/scss/style.scss',
+            'dist/style.css': 'src/scss/style.scss',
           }        
-        }
-      },
-      copy: {
-        dist: {
-          files: {
-                  'dist/foundation.min.js': 'bower_components/foundation/js/foundation.min.js',
-                  'src/foundation.min.js': 'bower_components/foundation/js/foundation.min.js',
-                  'src/foundation.js': 'bower_components/foundation/js/foundation.js',
-                  'dist/modernizr.js': 'bower_components/modernizr/modernizr.js',
-                  'dist/style.css': 'src/style.css',
-                  'src/jquery.min.js': 'bower_components/jquery/dist/jquery.min.js',
-                  'src/jquery.min.map': 'bower_components/jquery/dist/jquery.min.map',
-                  'dist/jquery.min.js': 'src/jquery.min.js',
-                  'dist/jquery.min.map': 'src/jquery.min.map',
-                  'dist/index.html': 'src/index.html',
-          }
         }
       },
     qunit: {
@@ -113,8 +97,7 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   
   // Default task.
-  grunt.registerTask('build', ['clean', 'concat', 'sass', 'uglify', 'copy']);
-  //grunt.registerTask('build', ['jshint', 'qunit', 'clean', 'concat', 'sass', 'uglify', 'copy']);
+  grunt.registerTask('build', ['clean', 'concat', 'sass', 'uglify']);
   grunt.registerTask('default', ['build', 'watch']);
 
 };

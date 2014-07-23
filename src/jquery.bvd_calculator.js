@@ -30,6 +30,8 @@ window.console.log('Start BVD Calculator');
 			cylInput.on("focusout", validateCyl);
 			axisInput.on("focusout", validateAxis);
 			bvdInputs.on("change", bvdChanged);
+			
+			compensatePower($(this));
 
 		});
 
@@ -63,17 +65,30 @@ window.console.log('Start BVD Calculator');
 
 		var outputId = '#' + inputForm.data('outputElement');
 
-		var sph = parseFloat(inputForm.find('#sph').val());
-		var cyl = parseFloat(inputForm.find('#cyl').val());
+		var sphVal = (inputForm.find('#sph').val() == 'PLANO') ? 0 : inputForm
+				.find('#sph').val();
+		var sph = parseFloat(sphVal);
+
+		var cylVal = (inputForm.find('#cyl').val() == 'PLANO') ? 0 : inputForm
+				.find('#cyl').val();
+		var cyl = parseFloat(cylVal);
+
 		var axis = parseFloat(inputForm.find('#axis').val());
 
 		var bvdChange = ($('#newBvd').val() - $('#originalBvd').val()) / 1000;
 
 		var newSph = sph / (1 + sph * bvdChange);
-		var newCyl = (sph + cyl) / (1 + (sph + cyl) * bvdChange) - newSph;
 
-		$(outputId).html(
-				formatPower(newSph) + ' / ' + newCyl.toFixed(2) + ' x ' + axis);
+		if (isNaN(cyl) || isNaN(axis) ) {
+			var output = (newSph == 0) ? formatPower(newSph)
+					: formatPower(newSph) + ' DS';
+			$(outputId).html(output);
+		} else {
+			var newCyl = (sph + cyl) / (1 + (sph + cyl) * bvdChange) - newSph;
+			$(outputId).html(
+					formatPower(newSph) + ' / ' + formatPower(newCyl) + ' x '
+							+ axis);
+		}
 	}
 
 	/**
@@ -195,6 +210,7 @@ window.console.log('Start BVD Calculator');
 		// PLANO or null value is fine, but all following assume numerical input
 		if (inputElement.val() == 'PLANO' || inputElement.val() === '') {
 			displayError(inputElement, '');
+			compensatePower(inputElement);
 			return;
 		}
 

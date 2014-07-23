@@ -24,8 +24,7 @@ jQuery(function($) {
 ```
 
 ## Example
-In your HTML file, allow the user to input the Rx. For the moment the form class and the input ids MUST 
-match the following. This will be more flexible in future versions.
+In your HTML file, allow the user to input the Rx. For the moment the form class must be `rx` and the input ids must be `sph`, `cyl` and `axis`. This will be more flexible in future versions.
 ```html
 <form id="R" class="rx">
  <input type="text" id="sph" />

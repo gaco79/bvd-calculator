@@ -33,30 +33,12 @@
     strictEqual(this.elems.bvd_calculator(), this.elems, 'should be chainable');
   });
 
-  test('is awesome', function() {
-    expect(1);
-    strictEqual(this.elems.bvd_calculator().text(), 'awesome0awesome1awesome2', 'should be awesome');
-  });
-
   module('jQuery.bvd_calculator');
-
-  test('is awesome', function() {
-    expect(2);
-    strictEqual($.bvd_calculator(), 'awesome.', 'should be awesome');
-    strictEqual($.bvd_calculator({punctuation: '!'}), 'awesome!', 'should be thoroughly awesome');
-  });
-
-  module(':bvd_calculator selector', {
-    // This will run before each test in this module.
-    setup: function() {
-      this.elems = $('#qunit-fixture').children();
-    }
-  });
-
-  test('is awesome', function() {
-    expect(1);
-    // Use deepEqual & .get() when comparing jQuery objects.
-    deepEqual(this.elems.filter(':bvd_calculator').get(), this.elems.last().get(), 'knows awesome when it sees it');
+  
+  test('correct output', function() {
+	 $('#R').bvd_calculator();
+	 console.log($('#outputR').val());
+	 equal($('#outputR').val(), '+3.00');
   });
 
 }(jQuery));

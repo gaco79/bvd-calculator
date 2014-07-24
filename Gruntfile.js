@@ -34,21 +34,6 @@ module.exports = function(grunt) {
         dest: 'dist/jquery.<%= pkg.name %>.min.js'
       },
     },
-    sass: {
-        options: {
-          includePaths: ['bower_components/foundation/scss'],
-        },
-        dist: {
-          options: {
-            //outputStyle: 'compressed', //ideal, but stripping header comment so not currently used
-            sourceComments: 'none',
-            outputStyle: 'compact'
-          },
-          files: {
-            'dist/style.css': 'src/scss/style.scss',
-          }        
-        }
-      },
     qunit: {
       files: ['test/**/*.html']
     },
@@ -85,10 +70,6 @@ module.exports = function(grunt) {
         tasks: ['jshint:test', 'qunit']
       },
       */
-      scss: {
-    	  files: 'src/scss/*.scss',
-          tasks: ['sass']  
-      }
     },
   });
 
@@ -97,7 +78,7 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   
   // Default task.
-  grunt.registerTask('build', ['clean', 'concat', 'sass', 'uglify']);
+  grunt.registerTask('build', ['clean', 'concat', 'uglify']);
   grunt.registerTask('default', ['build', 'watch']);
 
 };

@@ -1,4 +1,4 @@
-/*! BVD Calculator - v0.0.1 - 2014-07-24
+/*! BVD Calculator - v0.0.1 - 2014-07-25
 * http://bvdcalculator.garethcooper.com
 * Copyright (c) 2014 Gareth Cooper; Licensed GPLv2 */
 window.console.log('Start BVD Calculator');

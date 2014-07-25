@@ -8,8 +8,8 @@ it's latest release is running [on my website](http://bvdcalculator.garethcooper
 
 Download the [production version][min] or the [development version][max].
 
-[min]: https://raw.github.com/gareth/bvd-calculator/master/dist/jquery.bvd-calculator.min.js
-[max]: https://raw.github.com/gareth/bvd-calculator/master/src/jquery.bvd-calculator.js
+[min]: https://raw.github.com/gareth/bvd-calculator/master/dist/jquery.bvd_calculator.min.js
+[max]: https://raw.github.com/gareth/bvd-calculator/master/src/jquery.bvd_calculator.js
 
 In your web page:
 

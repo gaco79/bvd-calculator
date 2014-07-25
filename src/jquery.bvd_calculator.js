@@ -1,4 +1,4 @@
-/*bvs
+/*
  * bvd-calculator
  * http://bvdcalculator.garethcooper.com
  *

@@ -2,7 +2,7 @@
   "name": "bvd_calculator",
   "title": "BVD Calculator",
   "description": "Online converter for back vertex distance of optical lenses",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "http://bvdcalculator.garethcooper.com",
   "author": {
     "name": "Gareth Cooper",

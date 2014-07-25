@@ -1,15 +1,12 @@
 /*
- * bvd-calculator
+ * BVD-Calculator
  * http://bvdcalculator.garethcooper.com
  *
  * Copyright (c) 2014 Gareth Cooper
  * Licensed under the GPLv2 license.
  */
 
-window.console.log('Start BVD Calculator');
-
 (function($) {
-
 	// Collection method.
 	$.fn.bvd_calculator = function(options) {
 		var opts = $.extend({}, $.fn.bvd_calculator.defaults, options);
@@ -30,7 +27,7 @@ window.console.log('Start BVD Calculator');
 			cylInput.on("focusout", validateCyl);
 			axisInput.on("focusout", validateAxis);
 			bvdInputs.on("change", bvdChanged);
-			
+
 			compensatePower($(this));
 
 		});
@@ -79,7 +76,7 @@ window.console.log('Start BVD Calculator');
 
 		var newSph = sph / (1 + sph * bvdChange);
 
-		if (isNaN(cyl) || isNaN(axis) ) {
+		if (isNaN(cyl) || isNaN(axis)) {
 			var output = (newSph == 0) ? formatPower(newSph)
 					: formatPower(newSph) + ' DS';
 			$(outputId).html(output);

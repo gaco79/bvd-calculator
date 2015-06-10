@@ -62,20 +62,26 @@
 
 		var outputId = '#' + inputForm.data('outputElement');
 
+		// Get sphere power
 		var sphVal = (inputForm.find('#sph').val() == 'PLANO') ? 0 : inputForm
 				.find('#sph').val();
 		var sph = parseFloat(sphVal);
 
+		// Get cyl power
 		var cylVal = (inputForm.find('#cyl').val() == 'PLANO') ? 0 : inputForm
 				.find('#cyl').val();
 		var cyl = parseFloat(cylVal);
 
+		//Get axis
 		var axis = parseFloat(inputForm.find('#axis').val());
 
+		// Calculate change in BVD
 		var bvdChange = ($('#newBvd').val() - $('#originalBvd').val()) / 1000;
 
+		// Calculate compensated sphere power
 		var newSph = sph / (1 + sph * bvdChange);
 
+		// Calculate compensated cyl power
 		if (isNaN(cyl) || isNaN(axis)) {
 			var output = (newSph == 0) ? formatPower(newSph)
 					: formatPower(newSph) + ' DS';
@@ -124,7 +130,7 @@
 
 	/**
 	 * Format a number as an axis
-	 * 
+	 *
 	 * Current British Standard specifies no decimal points
 	 */
 	function formatAxis(axisValue) {
@@ -162,7 +168,7 @@
 
 	/**
 	 * Sphere specific input validation
-	 * 
+	 *
 	 * Problems with power values handled by validatePower()
 	 */
 	function validateSph(event) {
@@ -178,7 +184,7 @@
 
 	/**
 	 * Validate cyl power is correct
-	 * 
+	 *
 	 * Only errors specific to cyls required here. Errors relating to incorrect
 	 * power values will be dealt with be validatePower()
 	 */

@@ -71,7 +71,6 @@ gulp.task('build', function(cb) {
 
 // Default task: builds your app, and recompiles assets when they change
 gulp.task('default', function () {
-  $.livereload.listen();
 
   // Build
   sequence('build');

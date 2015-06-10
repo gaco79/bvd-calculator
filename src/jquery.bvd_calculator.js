@@ -14,10 +14,10 @@
 		return this.each(function(i) {
 
 			// Get inputs
-			sphereInput = $('#sph', this);
-			cylInput = $('#cyl', this);
-			axisInput = $('#axis', this);
-			bvdInputs = $('.bvd');
+			var sphereInput = $('#sph', this);
+			var cylInput = $('#cyl', this);
+			var axisInput = $('#axis', this);
+			var bvdInputs = $('.bvd');
 
 			// Generate and store output element
 			$(this).data('outputElement', 'output' + $(this).attr('id'));
@@ -54,6 +54,8 @@
 	 * Calculate the Compensated Power at the new vertex distance
 	 */
 	function compensatePower(inputElement) {
+
+		var inputForm;
 		if (inputElement.is('form')) {
 			inputForm = inputElement;
 		} else {
@@ -63,12 +65,12 @@
 		var outputId = '#' + inputForm.data('outputElement');
 
 		// Get sphere power
-		var sphVal = (inputForm.find('#sph').val() == 'PLANO') ? 0 : inputForm
+		var sphVal = (inputForm.find('#sph').val() === 'PLANO') ? 0 : inputForm
 				.find('#sph').val();
 		var sph = parseFloat(sphVal);
 
 		// Get cyl power
-		var cylVal = (inputForm.find('#cyl').val() == 'PLANO') ? 0 : inputForm
+		var cylVal = (inputForm.find('#cyl').val() === 'PLANO') ? 0 : inputForm
 				.find('#cyl').val();
 		var cyl = parseFloat(cylVal);
 
@@ -83,14 +85,14 @@
 
 		// Calculate compensated cyl power
 		if (isNaN(cyl) || isNaN(axis)) {
-			var output = (newSph == 0) ? formatPower(newSph)
+			var output = (newSph === 0) ? formatPower(newSph)
 					: formatPower(newSph) + ' DS';
 			$(outputId).html(output);
 		} else {
 			var newCyl = (sph + cyl) / (1 + (sph + cyl) * bvdChange) - newSph;
 			$(outputId).html(
-					formatPower(newSph) + ' / ' + formatPower(newCyl) + ' x '
-							+ axis);
+					formatPower(newSph) + ' / ' + formatPower(newCyl) + ' x ' +
+							axis);
 		}
 	}
 
@@ -99,7 +101,7 @@
 	 */
 	function formatPower(powerValue) {
 		// Value is PLANO?
-		if (powerValue == 'PLANO') {
+		if (powerValue === 'PLANO') {
 			powerValue = 0;
 		}
 
@@ -118,7 +120,7 @@
 			finalValue = '+' + power;
 		} else if (power < 0) {
 			finalValue = power;
-		} else if (power == 0) {
+		} else if (power === 0) {
 			finalValue = 'PLANO';
 		} else {
 			finalValue = '';
@@ -126,7 +128,6 @@
 
 		return finalValue;
 	}
-	;
 
 	/**
 	 * Format a number as an axis
@@ -135,8 +136,8 @@
 	 */
 	function formatAxis(axisValue) {
 		// No value set, return no value
-		if (axisValue == '') {
-			displayError(axisInput, '');
+		if (axisValue === '') {
+			displayError(axisValue, '');
 			return '';
 		}
 
@@ -146,7 +147,6 @@
 		// Validate
 		return finalAxis;
 	}
-	;
 
 	/**
 	 * Attach an error to an element
@@ -156,7 +156,7 @@
 		element.next('small.error').remove();
 
 		// Add / remove error markers
-		if (errorText != '') {
+		if (errorText !== '') {
 			element.parent('label').addClass('error');
 
 			element.after('<small class="error">' + errorText + '</small>');
@@ -175,7 +175,7 @@
 		var inputElement = $(event.target);
 
 		// Must contain at least 'PLANO'
-		if (inputElement.val() == '') {
+		if (inputElement.val() === '') {
 			inputElement.val('PLANO');
 		}
 
@@ -192,7 +192,7 @@
 		var inputElement = $(event.target);
 
 		// Can't have PLANO cyl
-		if (inputElement.val() == 'PLANO') {
+		if (inputElement.val() === 'PLANO') {
 			inputElement.val('');
 		}
 
@@ -211,14 +211,14 @@
 		var errorText = '';
 
 		// PLANO or null value is fine, but all following assume numerical input
-		if (inputElement.val() == 'PLANO' || inputElement.val() === '') {
+		if (inputElement.val() === 'PLANO' || inputElement.val() === '') {
 			displayError(inputElement, '');
 			compensatePower(inputElement);
 			return;
 		}
 
 		// Not a number
-		if (typeof value == 'NaN') {
+		if (isNaN(value)) {
 			errorText = 'Not a number';
 		}
 
@@ -228,7 +228,7 @@
 		}
 
 		// Not multiple of 0.25 error
-		if (value * 4 != Math.floor(value * 4)) {
+		if (value * 4 !== Math.floor(value * 4)) {
 			errorText = 'Power not multiple of 0.25';
 		}
 
@@ -265,7 +265,7 @@
 	/**
 	 * Update compensated power when BVD is changed
 	 */
-	function bvdChanged(event) {
+	function bvdChanged() {
 		$('.rx').each(function() {
 			compensatePower($(this));
 		});
@@ -275,9 +275,9 @@
 	 * Return Rx as String
 	 */
 	$.fn.bvd_calculator.toString = function() {
-		sph = $.fn.bvd_calculator.inputs.sphere.val();
-		cyl = $.fn.bvd_calculator.inputs.cyl.val();
-		axis = $.fn.bvd_calculator.inputs.axis.val();
+		var sph = $.fn.bvd_calculator.inputs.sphere.val();
+		var cyl = $.fn.bvd_calculator.inputs.cyl.val();
+		var axis = $.fn.bvd_calculator.inputs.axis.val();
 
 		return sph + ' / ' + cyl + ' x ' + axis;
 	};
